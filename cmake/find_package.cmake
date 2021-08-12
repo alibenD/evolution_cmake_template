@@ -1,0 +1,55 @@
+#---Automatically Generated from template 'option.cmake' wrote by @aliben---
+#
+# @Copyright (C) 2021 All rights reserved.
+# @filename: find_package.cmake
+# @author: aliben.develop@gmail.com
+# @create_date: 2021-08-12 21:02:27
+# @last_modified_date: NO_LAST_MODIFIED_DATE
+# @description: TODO
+#---****************************************************************---
+
+# Add extra Find module
+  list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+# Find *Config.cmake
+  # Example: find_package(OpenCV REQUIRED)
+  if(BUILD_TESTS)
+    find_package(GTest REQUIRED)
+    find_package(Threads REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    SET(TEST_LIBS
+    ${GTEST_BOTH_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT})
+  endif()
+  if(WITH_GLOG)
+    add_definitions(-DENABLE_GLOG)
+  endif()
+  #find_package(OpenCV)
+  #find_package(Eigen3)
+
+  find_program(MEMORYCHECK_COMMAND NAMES valgrind)
+  set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --leak-check=full")
+
+  include(CTest)
+
+# Set&Add INCLUDE PATH
+  # Example: SET ( VPATH_NAME PATH )
+  #          INCLUDE_DIRECTORIES(${VPATH_NAME})
+  include_directories(${PROJECT_SOURCE_DIR}/include)
+  include_directories(${PROJECT_SOURCE_DIR}/build/include)
+  include_directories(${CMAKE_INSTALL_PREFIX}/include)
+  include_directories(${OPENCV_INCLUDE_DIRS})
+  include_directories(${EIGEN3_INCLUDE_DIRS})
+
+# Set&Add LIB PATH/LINKING_DIRECTORIES
+  # Example: LINK_DIRECTORIES(${CMAKE_INSTALL_PREFIX}/lib)
+  link_directories(${CMAKE_INSTALL_PREFIX}/lib)
+  link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
+
+  set(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY} ${CoreVideo_LIBRARY})
+  set(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY})
+  set(LIBS ${LIBS} ${APPLE_LIBS})
+
+  set( THIRD_PARTY_LIBS
+    ${THIRD_PARTY_LIBS}
+    #${OpenCV_LIBS}
+  )
