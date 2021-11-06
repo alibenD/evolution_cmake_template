@@ -14,7 +14,6 @@
   # Example: find_package(OpenCV REQUIRED)
   if(BUILD_TESTS)
     find_package(GTest REQUIRED)
-    find_package(Threads REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
     SET(TEST_LIBS
     ${GTEST_BOTH_LIBRARIES}
@@ -25,6 +24,9 @@
   endif()
   #find_package(OpenCV)
   #find_package(Eigen3)
+  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+  set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+  find_package(Threads REQUIRED)
 
   find_program(MEMORYCHECK_COMMAND NAMES valgrind)
   set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --leak-check=full")
@@ -51,5 +53,4 @@
 
   set( THIRD_PARTY_LIBS
     ${THIRD_PARTY_LIBS}
-    #${OpenCV_LIBS}
   )

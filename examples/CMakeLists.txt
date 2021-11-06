@@ -4,7 +4,7 @@
 # @filename: evolution_cmake
 # @author: aliben.develop@gmail.com
 # @create_date: 2021-08-12 21:02:27
-# @last_modified_date: 2021-11-06 22:50:59
+# @last_modified_date: 2021-11-06 23:27:03
 # @description: TODO
 #---****************************************************************---
 
@@ -19,6 +19,9 @@ set(CMAKE_REQUIRED_FLAGS ${THREAD_SAN_FLAGS})
 check_cxx_compiler_flag(${THREAD_SAN_FLAGS} thread_san_work)
 set(CMAKE_REQUIRED_FLAGS ${MEMORY_SAN_FLAGS})
 check_cxx_compiler_flag(${MEMORY_SAN_FLAGS} memory_san_work)
+string(REPLACE " " ";" _ADDRESS_SAN_FLAGS ${ADDRESS_SAN_FLAGS})
+string(REPLACE " " ";" _THREAD_SAN_FLAGS ${THREAD_SAN_FLAGS})
+string(REPLACE " " ";" _MEMORY_SAN_FLAGS ${MEMORY_SAN_FLAGS})
 unset(CMAKE_REQUIRED_FLAGS)
 
 file(GLOB_RECURSE EXAMPLES *.cc)
@@ -31,15 +34,20 @@ foreach(EXAMPLE ${EXAMPLES})
       ${CMAKE_CURRENT_BINARY_DIR}/include
     )
   target_link_libraries(${MY_TARGET}
+    PUBLIC
+      Threads::Threads
+      #$<$<BOOL:{asan_works}>:${_asan_flags}>
     INTERFACE
       evolution_cmake
       ${THIRD_PARTY_LIBS})
 
   if(address_san_work)
-    message(STATUS "san work")
-    string(REPLACE " " ";" _ADDRESS_SAN_FLAGS ${ADDRESS_SAN_FLAGS})
     add_executable(${MY_TARGET}_san ${EXAMPLE})
     target_link_libraries(${MY_TARGET}_san
+      PUBLIC
+        Threads::Threads
+      PRIVATE
+        ${_ADDRESS_SAN_FLAGS}
       INTERFACE
         evolution_cmake
         ${THIRD_PARTY_LIBS})
@@ -49,10 +57,6 @@ foreach(EXAMPLE ${EXAMPLES})
         ${_ADDRESS_SAN_FLAGS}
     )
 
-    target_link_libraries(${MY_TARGET}_san
-      PRIVATE
-        ${_ADDRESS_SAN_FLAGS}
-      )
     add_test(
       NAME ${MY_TARGET}_san
       COMMAND $<TARGET_FILE:${MY_TARGET}_san>
@@ -60,11 +64,11 @@ foreach(EXAMPLE ${EXAMPLES})
   endif()
 
   if(thread_san_work)
-    message(STATUS "thread work")
-    string(REPLACE " " ";" _THREAD_SAN_FLAGS ${THREAD_SAN_FLAGS})
-    find_package(Threads REQUIRED)
     add_executable(${MY_TARGET}_thread ${EXAMPLE})
     target_link_libraries(${MY_TARGET}_thread
+      PUBLIC
+        Threads::Threads
+        ${_THREAD_SAN_FLAGS}
       INTERFACE
         evolution_cmake
         ${THIRD_PARTY_LIBS})
@@ -75,11 +79,6 @@ foreach(EXAMPLE ${EXAMPLES})
         ${_THREAD_SAN_FLAGS}
     )
 
-    target_link_libraries(${MY_TARGET}_thread
-      PRIVATE
-        Threads::Threads
-        ${_THREAD_SAN_FLAGS}
-      )
     add_test(
       NAME ${MY_TARGET}_thread
       COMMAND $<TARGET_FILE:${MY_TARGET}_thread>
@@ -87,10 +86,11 @@ foreach(EXAMPLE ${EXAMPLES})
   endif()
 
   if(memory_san_work)
-    message(STATUS "memory work")
-    string(REPLACE " " ";" _MEMORY_SAN_FLAGS ${MEMORY_SAN_FLAGS})
     add_executable(${MY_TARGET}_memory ${EXAMPLE})
     target_link_libraries(${MY_TARGET}_memory
+      PUBLIC
+        Threads::Threads
+        ${_MEMORY_SAN_FLAGS}
       INTERFACE
         evolution_cmake
         ${THIRD_PARTY_LIBS})
@@ -98,13 +98,8 @@ foreach(EXAMPLE ${EXAMPLES})
       PUBLIC
         ${CXX_BASIC_FLAGS}
         ${_MEMORY_SAN_FLAGS}
-    )
-
-    target_link_libraries(${MY_TARGET}_memory
-      PRIVATE
-        ${_MEMORY_SAN_FLAGS}
         -fPIC
-      )
+    )
 
     add_test(
       NAME ${MY_TARGET}_memory

@@ -11,31 +11,31 @@
 # Compiler Option
 
 
-  MESSAGE(STATUS "Setting up compiler flag")
-  IF(ENABLE_ALL_WARNING)
-    SET(CXX_FLAG_ALL_WARNING "-Wall")
-  ENDIF()
-  IF(ENABLE_WARNING_AS_ERROR)
-    SET(CXX_FLAG_WARNING_AS_ERROR "-Werror")
-  ENDIF()
-  IF(BUILD_GTESTS)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage -fprofile-arcs")
-  ENDIF()
-  IF(ENABLE_WARNING_EXTRA)
-    SET(CXX_FLAG_WARNING_EXTRA "-Wextra")
-  ENDIF()
-  IF(ENABLE_VERBOSE)
-    SET(CMAKE_VERBOSE_MAKEFILE ON)
-  ENDIF()
+  message(STATUS "Setting up compiler flag")
+  if(ENABLE_ALL_WARNING)
+    set(CXX_FLAG_ALL_WARNING "-Wall")
+  endif()
+  if(ENABLE_WARNING_AS_ERROR)
+    set(CXX_FLAG_WARNING_AS_ERROR "-Werror")
+  endif()
+  if(BUILD_GTESTS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage -fprofile-arcs")
+  endif()
+  if(ENABLE_WARNING_EXTRA)
+    set(CXX_FLAG_WARNING_EXTRA "-Wextra")
+  endif()
+  if(ENABLE_VERBOSE)
+    set(CMAKE_VERBOSE_MAKEFILE ON)
+  endif()
 
 
-  IF(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
-  ELSEIF(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    SET(CMAKE_DEBUG_POSTFIX _debug)
-  ENDIF()
+  if(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
+  elseif(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+    set(CMAKE_DEBUG_POSTFIX _debug)
+  endif()
 
 # Set Compiler Flag
-SET(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
   # Cross-platform check
   #IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")

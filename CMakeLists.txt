@@ -4,7 +4,7 @@
 # @filename: evolution_cmake
 # @author: aliben.develop@gmail.com
 # @create_date: 2021-08-12 21:02:27
-# @last_modified_date: 2021-11-06 20:56:42
+# @last_modified_date: 2021-11-07 11:36:42
 # @description: TODO
 #---****************************************************************---
 
@@ -25,6 +25,7 @@ include(option)
 include(compiler_option)
 include(other_options)
 include(find_package)
+include(system_detector)
 define_colors()
 
 build_warning("Project:  ${PROJECT_NAME}" )
