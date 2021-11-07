@@ -5,7 +5,7 @@
   * @version: v0.0.1
   * @author: aliben.develop@gmail.com
   * @create_date: 2021-08-12 23:36:40
-  * @last_modified_date: 2021-11-06 23:09:55
+  * @last_modified_date: 2021-11-07 21:42:05
   * @brief: TODO
   * @details: TODO
   *-----------------------------------------------*/
@@ -15,6 +15,7 @@
 //CODE
 #include <cstdio>
 #include <thread>
+#include <evolution_cmake/Test_Demo.hh>
 
 inline static int a = 0;
 
@@ -29,6 +30,7 @@ int main(int argc, char **argv)
   a[5] = 0;
   volatile int b = a[argc];
   if (b) printf("xx\n");
+  Demo::Obj obj;
 
   auto t1 = std::thread(&f);
   auto t2 = std::thread(&f);

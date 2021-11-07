@@ -4,7 +4,7 @@
 # @filename: evolution_cmake
 # @author: aliben.develop@gmail.com
 # @create_date: 2021-08-12 21:02:27
-# @last_modified_date: 2021-11-06 23:27:03
+# @last_modified_date: 2021-11-07 21:40:47
 # @description: TODO
 #---****************************************************************---
 
@@ -31,7 +31,7 @@ foreach(EXAMPLE ${EXAMPLES})
   #add_dependencies(${MY_TARGET} ${PROJECT_NAME})
   target_include_directories(${MY_TARGET}
     PRIVATE
-      ${CMAKE_CURRENT_BINARY_DIR}/include
+      ${PROJECT_NAME}_objs
     )
   target_link_libraries(${MY_TARGET}
     PUBLIC
