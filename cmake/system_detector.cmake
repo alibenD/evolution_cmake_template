@@ -9,6 +9,13 @@
 #---***********************************************---
 
 # os information
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(SYSTEM_NAME "IS_LINUX")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  set(SYSTEM_NAME "IS_MACOS")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  set(SYSTEM_NAME "IS_WINDOWS")
+endif()
 string(TIMESTAMP _configuration_time "%Y-%m-%d %H:%M:%S [UTC]" UTC)
 
 # PROCESSOR INSTRUCTION SET

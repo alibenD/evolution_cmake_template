@@ -25,14 +25,3 @@
 # CMake Build System Default Setup
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Default Build Type" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS Release Debug RelWithDebInfo MinSizeRel)
-
-#Macro
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  set(SYSTEM_NAME "IS_LINUX")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  set(SYSTEM_NAME "IS_MACOS")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  set(SYSTEM_NAME "IS_WINDOWS")
-endif()
-
