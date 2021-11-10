@@ -4,7 +4,7 @@
 # @filename: evolution_cmake
 # @author: aliben.develop@gmail.com
 # @create_date: 2021-08-12 21:02:27
-# @last_modified_date: 2021-11-06 20:14:39
+# @last_modified_date: 2021-11-10 21:33:01
 # @description: TODO
 #---****************************************************************---
 
@@ -23,9 +23,11 @@ add_library(${PROJECT_NAME}_objs
 target_include_directories(${PROJECT_NAME}_objs
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-  PRIVATE
-    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_INSTALL_PREFIX}/include
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
 )
+cmake_print_variables(CMAKE_BINARY_DIR)
 
 target_sources(${PROJECT_NAME}_objs
   PRIVATE
@@ -67,26 +69,27 @@ set_target_properties(${PROJECT_NAME}_objs
     CXX_EXTENSIONS OFF
 )
 
-add_library(${PROJECT_NAME}_shared
-  SHARED
+add_library(${PROJECT_NAME}_shared SHARED
     $<TARGET_OBJECTS:${PROJECT_NAME}_objs>
 )
 
-add_library(${PROJECT_NAME}_static
-  STATIC
+add_library(${PROJECT_NAME}_static STATIC
     $<TARGET_OBJECTS:${PROJECT_NAME}_objs>
 )
 
 set_target_properties(${PROJECT_NAME}_shared
   PROPERTIES
     OUTPUT_NAME ${PROJECT_NAME}
+    IMPORTED_LOCATION "${LIBRARY_OUTPUT_PATH}/lib${PROJECT_NAME}.so"
+    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include"
 )
 
 set_target_properties(${PROJECT_NAME}_static
   PROPERTIES
     OUTPUT_NAME ${PROJECT_NAME}
+    IMPORTED_LOCATION "${LIBRARY_OUTPUT_PATH}/lib${PROJECT_NAME}.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include"
 )
-
 
 target_link_libraries(${PROJECT_NAME}_static ${THIRD_PARTY_LIBS})
 target_link_libraries(${PROJECT_NAME}_shared ${THIRD_PARTY_LIBS})

@@ -12,13 +12,6 @@
   list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 # Find *Config.cmake
   # Example: find_package(OpenCV REQUIRED)
-  if(BUILD_TESTS)
-    find_package(GTest REQUIRED)
-    include_directories(${GTEST_INCLUDE_DIRS})
-    SET(TEST_LIBS
-    ${GTEST_BOTH_LIBRARIES}
-    ${CMAKE_THREAD_LIBS_INIT})
-  endif()
   if(WITH_GLOG)
     add_definitions(-DENABLE_GLOG)
   endif()
@@ -32,15 +25,6 @@
   set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--trace-children=yes --leak-check=full")
 
   include(CTest)
-
-# Set&Add INCLUDE PATH
-  # Example: SET ( VPATH_NAME PATH )
-  #          INCLUDE_DIRECTORIES(${VPATH_NAME})
-  include_directories(${PROJECT_SOURCE_DIR}/include)
-  include_directories(${PROJECT_SOURCE_DIR}/build/include)
-  include_directories(${CMAKE_INSTALL_PREFIX}/include)
-  include_directories(${OPENCV_INCLUDE_DIRS})
-  include_directories(${EIGEN3_INCLUDE_DIRS})
 
 # Set&Add LIB PATH/LINKING_DIRECTORIES
   # Example: LINK_DIRECTORIES(${CMAKE_INSTALL_PREFIX}/lib)

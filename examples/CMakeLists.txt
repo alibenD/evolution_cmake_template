@@ -4,7 +4,7 @@
 # @filename: evolution_cmake
 # @author: aliben.develop@gmail.com
 # @create_date: 2021-08-12 21:02:27
-# @last_modified_date: 2021-11-07 21:40:47
+# @last_modified_date: 2021-11-10 00:28:51
 # @description: TODO
 #---****************************************************************---
 
@@ -30,8 +30,11 @@ foreach(EXAMPLE ${EXAMPLES})
   add_executable(${MY_TARGET} ${EXAMPLE})
   #add_dependencies(${MY_TARGET} ${PROJECT_NAME})
   target_include_directories(${MY_TARGET}
-    PRIVATE
-      ${PROJECT_NAME}_objs
+    PUBLIC
+      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_INSTALL_PREFIX}/include
+      ${PROJECT_SOURCE_DIR}/include
+      ${CMAKE_BINARY_DIR}/include
     )
   target_link_libraries(${MY_TARGET}
     PUBLIC
@@ -43,13 +46,19 @@ foreach(EXAMPLE ${EXAMPLES})
 
   if(address_san_work)
     add_executable(${MY_TARGET}_san ${EXAMPLE})
+    target_include_directories(${MY_TARGET}_san
+      PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_INSTALL_PREFIX}/include
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+      )
     target_link_libraries(${MY_TARGET}_san
       PUBLIC
         Threads::Threads
       PRIVATE
         ${_ADDRESS_SAN_FLAGS}
       INTERFACE
-        evolution_cmake
         ${THIRD_PARTY_LIBS})
     target_compile_options(${MY_TARGET}_san
       PUBLIC
@@ -65,6 +74,13 @@ foreach(EXAMPLE ${EXAMPLES})
 
   if(thread_san_work)
     add_executable(${MY_TARGET}_thread ${EXAMPLE})
+    target_include_directories(${MY_TARGET}_thread
+      PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_INSTALL_PREFIX}/include
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+      )
     target_link_libraries(${MY_TARGET}_thread
       PUBLIC
         Threads::Threads
@@ -87,6 +103,13 @@ foreach(EXAMPLE ${EXAMPLES})
 
   if(memory_san_work)
     add_executable(${MY_TARGET}_memory ${EXAMPLE})
+    target_include_directories(${MY_TARGET}_memory
+      PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_INSTALL_PREFIX}/include
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+      )
     target_link_libraries(${MY_TARGET}_memory
       PUBLIC
         Threads::Threads
@@ -106,5 +129,4 @@ foreach(EXAMPLE ${EXAMPLES})
       COMMAND $<TARGET_FILE:${MY_TARGET}_memory>
       )
   endif()
-
 endforeach()
